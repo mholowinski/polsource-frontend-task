@@ -14,10 +14,27 @@ const App = () => {
   const initialState =  JSON.parse(localStorage.getItem("todos") || "[]")
   const [todos, setTodos] = useState(initialState);
   
+  function toggleHover(id){
+    let element = document.getElementById('row-' + id).getElementsByTagName("button")[0];
+    element.style.display == "none" ? element.style.display = "inline-flex" : element.style.display = "none"
+}
+
+  function penis() {
+    console.log("XD")
+  }
+
   
   useEffect(() => {
     localStorage.setItem("todos",JSON.stringify(todos) )
-   
+   // console.log(document.getElementsByClassName("rdt_TableRow")[0])
+    let RowArray = document.getElementsByClassName("rdt_TableRow")
+
+    for (let item of RowArray) {
+       item.setAttribute("onmouseover",'penis()')
+      
+  }
+    
+  
   }, [todos]);
 
   const customStyles = {
@@ -87,16 +104,7 @@ const App = () => {
     }
   ];
 
-  function toggleHover(id){
-    let element = document.getElementById('row-' + id).getElementsByTagName("button")[0];
-
-        element.style.display == "none" ? element.style.display = "inline-flex" : element.style.display = "none"
-    
-      
-    
-    
-  }
-
+ 
  function changeDone(row){
    const rowIndex = todos.indexOf(row);
    const newDone = todos.filter((index) => index !== rowIndex);
