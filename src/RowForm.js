@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 const RowForm = ({ saveTodo }) => {
   const [rowValue, setRowValue] = useState({
-    id: 1,
+    id: 0,
     todoValue: "todo",
-    priorityValue: "low",
+    priorityValue: "Low",
     isDone: false
   });
 
@@ -26,7 +26,7 @@ const RowForm = ({ saveTodo }) => {
           return {
           id: prevState.id +1,
           todoValue: "",
-          priorityValue: "low",
+          priorityValue: "Low",
           isDone: false}
           
 
@@ -48,9 +48,9 @@ const RowForm = ({ saveTodo }) => {
         name="priorityValue"
       >
        
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
       </select>
      
       <input type="submit" placeholder="Priority"></input>

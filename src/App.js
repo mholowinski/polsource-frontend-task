@@ -24,24 +24,43 @@ const App = () => {
       selector: 'isDone',
       sortable: true,
       // eslint-disable-next-line react/display-name
-      cell: row => <div><input type="checkbox" checked={row.isDone} onChange={()=>{changeDone(row.id)}} /></div>
+      cell: row => <div><input type="checkbox" checked={row.isDone} onChange={()=>{changeDone(row)}} /></div>
+    },
+    {
+      // eslint-disable-next-line react/display-name
+      cell: row => <div><button onClick={()=>{deleteRow(row)}}>Delete</button></div>
     }
   ];
 
  function changeDone(rowIndex){
-  const newDone = todos.filter((index) => index !== rowIndex);
-  newDone[rowIndex-1].isDone = !newDone[rowIndex-1].isDone
-  setTodos(newDone);
+   console.log(rowIndex)
+   const indexOf = todos.indexOf(rowIndex);
+   const newDone = todos.filter((index) => index !== indexOf);
+   newDone[indexOf].isDone = !newDone[indexOf].isDone
+   setTodos(newDone);
+ }
+
+ function deleteRow(rowIndex){
+  const indexOf = todos.indexOf(rowIndex);
+  const newTodos = todos.filter((_, index) => index !== indexOf);     
+  setTodos(newTodos);
  }
 
   useEffect(() => {
     console.log(todos);
   }, [todos]);
-
+  const paginationOptions = { rowsPerPageText: 'Rows per page: ', rangeSeparatorText: 'of'};
   // const [prios, setPrios] = useState("prio");
   return (
     <div id="container">
-      <DataTable data={todos} columns={columns}>
+      <DataTable
+        pagination
+        paginationComponentOptions={paginationOptions}
+        paginationPerPage={5}
+         paginationRowsPerPageOptions={[5,10,15]}
+        data={todos}
+
+        columns={columns}>
         <thead>
           <tr>
           </tr>
