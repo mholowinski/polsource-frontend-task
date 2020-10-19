@@ -4,12 +4,20 @@ import RowForm from "./RowForm.js";
 import DataTable from 'react-data-table-component';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { display } from '@material-ui/system';
-
-
-
+import Checkbox from '@material-ui/core/Checkbox';
+import { withStyles } from '@material-ui/core/styles';
+import { grey, yellow } from '@material-ui/core/colors';
 
 const App = () => {
+  const YellowCheckbox = withStyles({
+    root: {
+      color: grey,
+      '&$checked': {
+        color: yellow[900],
+      },
+    },
+    checked: {},
+  })((props) => <Checkbox color="default" {...props} />);
 
   const initialState =  JSON.parse(localStorage.getItem("todos") || "[]")
   const [todos, setTodos] = useState(initialState);
@@ -18,39 +26,46 @@ const App = () => {
     let element = document.getElementById('row-' + id).getElementsByTagName("button")[0];
     element.style.display == "none" ? element.style.display = "inline-flex" : element.style.display = "none"
 }
-
-  function penis() {
-    console.log("XD")
-  }
-
   
   useEffect(() => {
     localStorage.setItem("todos",JSON.stringify(todos) )
-   // console.log(document.getElementsByClassName("rdt_TableRow")[0])
-    let RowArray = document.getElementsByClassName("rdt_TableRow")
+    let localStor = JSON.parse(localStorage.getItem("todos") || "[]");
+    if (localStor.length > 0 ){
+      const maxId = localStor.reduce(
+        (max, character) => (character.id > max ? character.id : max),
+        localStor[0].id
+      ); 
+      localStorage.setItem("maxId", maxId);
+    }}, [todos]);
 
-    for (let item of RowArray) {
-       //item.setAttribute("onmouseover",'penis()')
-      
-  }
-    
-  
-  }, [todos]);
-
+  const paginationOptions = { rowsPerPageText: 'Rows per page: ', rangeSeparatorText: 'of'};
   const customStyles = {
     rows: {
       style: {
-        minHeight: '72px', // override the row height
-        
+        minHeight: '72px', 
       },
-
     },
-
+    headRow:{
+      style:{
+        backgroundColor: '#494430',
+        color: '#FFFFFF'
+      }
+    },
+    headCells:{
+      style:{
+        color: '#FFFFFF'
+      }
+    },
+    table:{
+      style:{
+        borderStyle: 'solid',
+        borderColor: '#E8E8E8',
+        borderWidth: '10px'
+      }
+    }
   };
-
   
   const columns = [
-    
     {
       name: 'Task name',
       selector: 'todo',
@@ -58,18 +73,22 @@ const App = () => {
       maxWidth: "650px",
       // eslint-disable-next-line react/display-name
       cell: row => (
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          height: "100%",
-          width: "100%"
-        }} onMouseEnter={()=>toggleHover(row.id)}
-          // onMouseLeave={()=>toggleHover(row.id)}
-            
-        >
-          {row.todo}
-        </div>
-      )
+        <div 
+          style={{
+            display: "flex",
+            alignItems: "center",
+            height: "100%",
+            width: "100%"
+          }}
+          onMouseEnter={()=>toggleHover(row.id)}
+          onMouseLeave={()=>toggleHover(row.id)}
+        >{row.todo}
+          <div style={{position: 'absolute', right: '0'}}>
+            <IconButton style={{display: "none"}}onClick={()=>{deleteRow(row)}}>
+                <DeleteIcon fontSize="small" />
+            </IconButton>
+          </div>
+        </div>)
     },
     {
       name: 'Priority',
@@ -77,34 +96,26 @@ const App = () => {
       sortable: true,
       right: false,
       maxWidth: "200px",
-      
-      
     },
     {
       name: "Done",
       selector: 'isDone',
       sortable: true,
       // eslint-disable-next-line react/display-name
-      cell: row => <input type="checkbox" checked={row.isDone} onChange={()=>{changeDone(row)}} />,
+      cell: row => <YellowCheckbox  checked={row.isDone} onChange={()=>{changeDone(row)}} />,
       maxWidth: "50px",
       minWidth:"50px"
     },
     {
       // eslint-disable-next-line react/display-name
-      cell: row => <IconButton style={
-        {
-          display: "none"
-        }
-      }
-         onClick={()=>{deleteRow(row)}}>
-         <DeleteIcon fontSize="small" />
-         </IconButton>,
+      cell: row => <IconButton style={{display: "none"}}onClick={()=>{deleteRow(row)}}>
+                      <DeleteIcon fontSize="small" />
+                   </IconButton>,
       maxWidth: "50px",
       minWidth:"50px"
     }
   ];
 
- 
  function changeDone(row){
    const rowIndex = todos.indexOf(row);
    const newDone = todos.filter((index) => index !== rowIndex);
@@ -119,7 +130,6 @@ const App = () => {
  }
 
 
-  const paginationOptions = { rowsPerPageText: 'Rows per page: ', rangeSeparatorText: 'of'};
   return (
     <div id="container">
       <DataTable
@@ -128,12 +138,9 @@ const App = () => {
         paginationPerPage={5}
         paginationRowsPerPageOptions={[5,10,15]}
         highlightOnHover
-        customStyles={customStyles}
-        
-        data={todos}
-
-        columns={columns}>
-  
+        customStyles={customStyles} //Import styles
+        data={todos} //Import data from state
+        columns={columns}> 
       </DataTable>
 
       <RowForm
