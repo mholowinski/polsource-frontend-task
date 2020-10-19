@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const RowForm = ({ saveTodo }) => {
   const [rowValue, setRowValue] = useState({
-    id: 0,
+    id: 0, //OSTATNI ID Z LOCALSTORAGE
     todoValue: "todo",
     priorityValue: "Low",
     isDone: false

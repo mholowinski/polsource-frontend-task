@@ -1,2 +1,16 @@
-.body {
+body {
+  font-family: "Titillium Web", sans-serif;
+}
+.heading {
+  font-weight: 700;
+}
+.subheading {
+  font-weight: 300;
+}
+#container {
+  max-width: 1000px;
+  margin: auto;
+}
+.rtd_TableRow:hover {
+  display: none;
 }
