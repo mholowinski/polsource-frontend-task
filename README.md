@@ -6,7 +6,7 @@
 
 <b>How to run the project</b>
 
-Type following commands in the CLI from inside the project folder
+Type the following commands in the CLI from inside the project folder
 - npm install 
 - npm run dev
 
