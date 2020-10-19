@@ -11,6 +11,7 @@ body {
   max-width: 1000px;
   margin: auto;
 }
-.rtd_TableRow:hover {
-  display: none;
+
+#main-form > * {
+  margin-right: 10px;
 }

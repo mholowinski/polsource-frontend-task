@@ -30,7 +30,7 @@ const App = () => {
     let RowArray = document.getElementsByClassName("rdt_TableRow")
 
     for (let item of RowArray) {
-       item.setAttribute("onmouseover",'penis()')
+       //item.setAttribute("onmouseover",'penis()')
       
   }
     

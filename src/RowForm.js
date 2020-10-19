@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import Input from '@material-ui/core/Input';
+import Select from '@material-ui/core/Select';
 
 const RowForm = ({ saveTodo }) => {
   const [rowValue, setRowValue] = useState({
     id: 0, //OSTATNI ID Z LOCALSTORAGE
-    todoValue: "todo",
+    todoValue: "",
     priorityValue: "Low",
     isDone: false
   });
@@ -18,7 +20,7 @@ const RowForm = ({ saveTodo }) => {
   }
 
   return (
-    <form
+    <form id="main-form"
       onSubmit={(event) => {
         event.preventDefault(); //?
         saveTodo(rowValue); //?
@@ -34,26 +36,29 @@ const RowForm = ({ saveTodo }) => {
         
       }}
     >
-      <input
-        placeholder="enter task"
+      <Input
+      required
+        placeholder="Enter task"
         type="text"
         name="todoValue"
         onChange={handleChange}
         value={rowValue.todoValue}
-      ></input>
+      ></Input>
 
-      <select
+      <Select
+      native
         onChange={handleChange}
         value={rowValue.priorityValue}
         name="priorityValue"
+        label= "Priority"
+        
       >
-       
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
+        <option value={"Low"}>Low</option>
+        <option value={"Medium"}>Medium</option>
+        <option value={"High"}>High</option>
+      </Select>
      
-      <input type="submit" placeholder="Priority"></input>
+      <Input type="submit" value="Add"></Input>
     </form>
   );
 };
